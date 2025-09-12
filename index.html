@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <title>Family Cards - Strengthen Family Bonds Through Conversation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, interactive-widget=resizes-content">
+    <meta name="description" content="A fun interactive game with 200 conversation starters across 5 categories to help families connect, share memories, and create lasting bonds.">
+    <meta name="author" content="Michael Schwartz">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Family Cards - Strengthen Family Bonds Through Conversation">
+    <meta name="theme-color" content="#d9e0e5">
+    <meta name="apple-mobile-web-app-title" content="Family Cards - Strengthen Family Bonds Through Conversation">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="./index.html">
+    <meta name="msapplication-navbutton-color" content="#d9e0e5">
+    <meta property="og:url" content="https://michaelsboost.com/FamilyCards" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Family Cards - Strengthen Family Bonds Through Conversation" />
+    <meta property="og:description" content="A fun interactive game with 200 conversation starters across 5 categories to help families connect, share memories, and create lasting bonds." />
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" type="image/x-icon" href="imgs/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="imgs/logo.svg" />
+    <link rel="apple-touch-icon" href="imgs/logo.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dist/bundle.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
+  
+  </head>
+  <body>
+    
+<main class="container" x-data="familyCards()">
+  <header class="text-center py-4">
+    <h1 class="text-4xl font-bold couple-font text-[#2a86f4]">Family Cards</h1>
+    <p class="text-lg text-gray-600">Strengthen your family bonds one question at a time</p>
+  </header>
+
+  <details class="mb-6 bg-white rounded-lg shadow-sm p-4">
+    <summary class="font-semibold cursor-pointer">How to Play</summary>
+    <p class="mt-3 text-gray-600">Take turns drawing cards and answering the questions. Click the card to flip it and reveal the question. After answering, click "Next Card" to continue. You can also choose specific categories if you prefer! The goal is to learn more about each other and create lasting memories!</p>
+  </details>
+
+  <div class="grid grid-cols-1 md:grid-cols-[repeat(3,1fr)] gap-0 md:gap-4 mx-0 my-8 items-center">
+    <article class="bg-white p-4 text-center rounded-2xl">
+      <h4 class="text-[#2a86f4]" x-text="cardsAnswered"></h4>
+      <div class="text-sm text-[#6c757d]">Cards Answered</div>
+    </article>
+    <article class="bg-white p-4 text-center rounded-2xl">
+      <h4 class="text-[#2a86f4]" x-text="currentCategory"></h4>
+      <div class="text-sm text-[#6c757d]">Current Category</div>
+    </article>
+    <article class="bg-white p-4 text-center rounded-2xl">
+      <h4 class="text-[#2a86f4]" x-text="`${Math.floor((cardsAnswered / totalCards) * 100)}%`"></h4>
+      <div class="text-sm text-[#6c757d]">Progress</div>
+    </article>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" :style="`width: ${(cardsAnswered / totalCards) * 100}%`"></div>
+  </div>
+
+  <!-- Category Selector -->
+  <div class="my-6 text-center">
+    <h3 class="font-semibold mb-6">Choose a category (or random):</h3>
+    <div class="flex flex-col sm:flex-row justify-center gap-2">
+      <template x-for="category in categories" :key="category">
+        <button @click="selectCategory(category)" class="rounded-full text-sm" :class="{
+                        'text-white border-[#2a86f4] bg-[#2a86f4] ': selectedCategory === category,
+                        'bg-transparent text-gray-700': selectedCategory !== category
+                        }" x-text="category"></button>
+      </template>
+    </div>
+  </div>
+
+  <!-- Card -->
+  <div class="card-container" @click="flipCard()">
+    <div class="card" :class="{ 'flipped': cardFlipped }">
+      <article class="card-front">
+        <div class="text-[4rem] animate-[pulse_2s_infinite] mb-4">👨‍👩‍👧‍👦</div>
+        <h2 class="text-white text-2xl font-bold mb-2">Family Cards</h2>
+        <p class="text-gray-300 text-md font-thin">Click to reveal your question</p>
+      </article>
+      <div class="card-back">
+        <span class="absolute text-white text-[0.8rem] font-medium px-3 py-1 rounded-full top-3 right-3 bg-[#55ddba]" x-text="currentCard.category"></span>
+        <h3 class="text-xl font-semibold mb-4" x-text="currentCard.question"></h3>
+        <p class="text-sm text-gray-500">Discuss your answers with each other</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 mt-6">
+    <button @click="nextCard()" class="text-white border-[#2a86f4] bg-[#2a86f4]  p-3 rounded-lg font-semibold transition hover:opacity-90">
+      Next Card
+    </button>
+    <button @click="resetGame()" class="bg-gray-200 p-3 rounded-lg font-semibold text-gray-700 transition hover:bg-gray-300">
+      Reset Game
+    </button>
+  </div>
+
+  <footer role="contentinfo" class="mt-8 py-6 text-center text-gray-500">
+    <p class="text-sm flex flex-wrap justify-center items-center gap-2">
+      <span>Made with <span aria-hidden="true">
+        <svg class="w-4 text-red-500 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53z"></path></svg>
+      </span> for stronger family connections</span>
+      <span class="text-gray-300">•</span>
+      <span>Built by 
+        <a href="https://michaelsboost.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-gray-600">
+          Michael Schwartz
+        </a>
+      </span>
+    </p>
+  </footer>
+</main>
+
+<script>
+function familyCards() {
+  return {
+    cardFlipped: false,
+    cardsAnswered: 0,
+    totalCards: 50,
+    selectedCategory: null,
+    currentCard: { 
+      question: "Click next card to begin", 
+      category: "Getting Started" 
+    },
+    currentCategory: "Getting Started",
+    categories: ["Childhood Memories", "Family Traditions", "Values & Beliefs", "Fun & Imagination", "Appreciation"],
+
+    // Family-oriented questions from different categories (40 questions each)
+    questions: [
+      {
+        category: "Childhood Memories",
+        questions: [
+          "What's your favorite childhood memory with our family?",
+          "What was your favorite game to play as a child?",
+          "What's a funny story from your childhood?",
+          "Who was your favorite teacher and why?",
+          "What was your favorite family vacation growing up?",
+          "What was your favorite toy or possession as a child?",
+          "What was your favorite subject in school?",
+          "What was the first thing you wanted to be when you grew up?",
+          "What was your favorite book or story as a child?",
+          "What was your favorite family meal when you were young?",
+          "What was your biggest childhood fear?",
+          "What was your favorite holiday tradition as a child?",
+          "What was the best gift you ever received as a child?",
+          "What was your favorite outdoor activity as a child?",
+          "What did you enjoy doing on weekends as a child?",
+          "What was your favorite TV show or movie as a child?",
+          "What was your first pet?",
+          "What was your favorite hiding spot as a child?",
+          "What was the most trouble you got into as a child?",
+          "What was your favorite thing to do with your grandparents?",
+          "What was your favorite school lunch?",
+          "What was your favorite family game night activity?",
+          "What was your favorite birthday party?",
+          "What was your favorite place to visit as a child?",
+          "What was your favorite thing to do on a rainy day?",
+          "What was your favorite summer activity?",
+          "What was your favorite winter activity?",
+          "What was the first concert you attended?",
+          "What was your favorite cartoon character?",
+          "What was your favorite thing to collect as a child?",
+          "What was your favorite breakfast cereal?",
+          "What was your favorite thing to do after school?",
+          "What was your favorite pajamas or outfit as a child?",
+          "What was your favorite family story that was told often?",
+          "What was your favorite tree or climbing spot?",
+          "What was your favorite thing to bake or cook with family?",
+          "What was your favorite joke as a child?",
+          "What was your favorite bedtime routine?",
+          "What was your favorite thing to do at the playground?",
+          "What was your favorite memory with your siblings?"
+        ]
+      },
+      {
+        category: "Family Traditions",
+        questions: [
+          "What family tradition do you value most?",
+          "What new tradition would you like to start?",
+          "What holiday memory stands out most to you?",
+          "What's your favorite family meal?",
+          "How did your family celebrate special occasions when you were young?",
+          "What's your favorite holiday food tradition?",
+          "What's a tradition from your childhood that you'd like to continue?",
+          "What's your favorite way to celebrate birthdays?",
+          "What's a cultural tradition that's important to our family?",
+          "What's your favorite summer tradition?",
+          "What's your favorite winter tradition?",
+          "What's a simple daily ritual you enjoy with family?",
+          "What's your favorite way to celebrate achievements?",
+          "What's a tradition you've started since having a family?",
+          "What's your favorite family vacation tradition?",
+          "What's your favorite way to celebrate the new year?",
+          "What's a religious or spiritual tradition that's important to you?",
+          "What's your favorite way to celebrate anniversaries?",
+          "What's a tradition around meals that you enjoy?",
+          "What's your favorite way to celebrate cultural heritage?",
+          "What's a bedtime tradition you enjoy with family?",
+          "What's your favorite holiday decoration tradition?",
+          "What's a tradition around giving and receiving gifts?",
+          "What's your favorite way to celebrate seasons changing?",
+          "What's a tradition from your family of origin that you've kept?",
+          "What's your favorite memory-making tradition?",
+          "What's a tradition around storytelling in our family?",
+          "What's your favorite way to celebrate family history?",
+          "What's a tradition around music or dancing in our family?",
+          "What's your favorite way to celebrate weekends?",
+          "What's a tradition around games or sports?",
+          "What's your favorite way to celebrate friendship?",
+          "What's a tradition around gratitude or thankfulness?",
+          "What's your favorite way to celebrate nature?",
+          "What's a tradition around learning or education?",
+          "What's your favorite way to celebrate creativity?",
+          "What's a tradition around helping others?",
+          "What's your favorite way to celebrate relaxation?",
+          "What's a tradition around communication in our family?",
+          "What's your favorite way to celebrate our family's uniqueness?"
+        ]
+      },
+      {
+        category: "Values & Beliefs",
+        questions: [
+          "What's the most important value you want to teach?",
+          "What does 'family' mean to you?",
+          "What life lesson do you hope to pass on?",
+          "How do you define success for our family?",
+          "What are you most grateful for in our family?",
+          "What does honesty mean to you in family relationships?",
+          "How do you show respect in our family?",
+          "What does responsibility mean in our family?",
+          "How do we practice kindness in our family?",
+          "What does courage mean to you?",
+          "How do we show appreciation for each other?",
+          "What does forgiveness mean in our family?",
+          "How do we practice patience with each other?",
+          "What does generosity mean to our family?",
+          "How do we show empathy to one another?",
+          "What does teamwork mean in our family?",
+          "How do we practice gratitude daily?",
+          "What does perseverance mean to you?",
+          "How do we show support for each other's dreams?",
+          "What does integrity mean in our family?",
+          "How do we practice open communication?",
+          "What does loyalty mean in our family?",
+          "How do we show compassion to each other?",
+          "What does humility mean to you?",
+          "How do we practice fairness in our family?",
+          "What does trust mean in our family relationships?",
+          "How do we show love to each other?",
+          "What does cooperation mean in our family?",
+          "How do we practice mindfulness together?",
+          "What does optimism mean to our family?",
+          "How do we show commitment to our family?",
+          "What does simplicity mean to you?",
+          "How do we practice generosity beyond our family?",
+          "What does curiosity mean to our family?",
+          "How do we show respect for differences?",
+          "What does balance mean in our family life?",
+          "How do we practice environmental stewardship?",
+          "What does justice mean to our family?",
+          "How do we show appreciation for our heritage?",
+          "What does growth mean to our family?"
+        ]
+      },
+      {
+        category: "Fun & Imagination",
+        questions: [
+          "If our family could have any superpower, what would you choose?",
+          "If we could travel anywhere together, where would you want to go?",
+          "What would our family theme song be?",
+          "If we could have any animal as a pet, what would you choose?",
+          "What movie best represents our family?",
+          "If our family started a business, what would it be?",
+          "If we could invent a new holiday, what would we celebrate?",
+          "If our family had a mascot, what would it be?",
+          "If we could live in any time period, when would you choose?",
+          "If our family wrote a book, what would it be about?",
+          "If we could learn any skill instantly, what would you choose?",
+          "If our family had a catchphrase, what would it be?",
+          "If we could have a movie night with any celebrity, who would you choose?",
+          "If our family could solve one world problem, what would it be?",
+          "If we could design our dream home, what would it include?",
+          "If our family had a talent show, what would each person do?",
+          "If we could create a new family tradition, what would it be?",
+          "If our family could star in a TV show, what genre would it be?",
+          "If we could meet any historical figure, who would you choose?",
+          "If our family had a time machine, where would we go first?",
+          "If we could have a magical object, what would you choose?",
+          "If our family could be any type of weather, what would we be?",
+          "If we could create a new ice cream flavor, what would it be?",
+          "If our family could be characters in a video game, what would the game be like?",
+          "If we could have a conversation with animals, what would you ask?",
+          "If our family could be any type of transportation, what would we be?",
+          "If we could create a new board game, what would it be about?",
+          "If our family could be any dessert, what would we be?",
+          "If we could have a family superhero team, what would our powers be?",
+          "If we could solve any mystery, what would it be?",
+          "If our family could be any musical instrument, what would we be?",
+          "If we could create a new sport, what would it be?",
+          "If our family could be any type of tree, what would we be?",
+          "If we could have a magical ability, what would you choose?",
+          "If our family could be any color, what would we be?",
+          "If we could create a new language, what would some words be?",
+          "If our family could be any mythological creature, what would we be?",
+          "If we could have an unlimited supply of one thing, what would it be?",
+          "If our family could be any type of dance, what would we be?",
+          "If we could create a new planet, what would it be like?"
+        ]
+      },
+      {
+        category: "Appreciation",
+        questions: [
+          "What do you appreciate most about each family member?",
+          "What's something another family member does that makes you happy?",
+          "What's your favorite thing to do together as a family?",
+          "What makes our family unique?",
+          "How do you show your love for your family?",
+          "What's a quality you admire in each family member?",
+          "What's a memory you appreciate with our family?",
+          "What's something a family member taught you?",
+          "What's a way our family supports each other?",
+          "What's a challenge we've overcome together?",
+          "What's a talent or skill you appreciate in our family?",
+          "What's a way our family makes you feel safe?",
+          "What's a time when a family member made you proud?",
+          "What's a way our family makes you laugh?",
+          "What's a way our family comforts each other?",
+          "What's a sacrifice a family member made that you appreciate?",
+          "What's a way our family works together?",
+          "What's a tradition you appreciate in our family?",
+          "What's a way our family shows creativity?",
+          "What's a way our family explores together?",
+          "What's a way our family learns together?",
+          "What's a way our family helps others?",
+          "What's a way our family celebrates differences?",
+          "What's a way our family practices gratitude?",
+          "What's a way our family communicates well?",
+          "What's a way our family respects each other?",
+          "What's a way our family shows patience?",
+          "What's a way our family demonstrates courage?",
+          "What's a way our family shows generosity?",
+          "What's a way our family practices forgiveness?",
+          "What's a way our family shows empathy?",
+          "What's a way our family demonstrates trust?",
+          "What's a way our family shows commitment?",
+          "What's a way our family demonstrates loyalty?",
+          "What's a way our family shows humility?",
+          "What's a way our family practices fairness?",
+          "What's a way our family shows optimism?",
+          "What's a way our family demonstrates curiosity?",
+          "What's a way our family shows balance?",
+          "What's a way our family grows together?"
+        ]
+      }
+    ],
+
+    init() {
+      this.totalCards = this.questions.reduce((total, category) => total + category.questions.length, 0);
+    },
+
+    flipCard() {
+      if (this.currentCard.question !== "Click next card to begin") {
+        this.cardFlipped = !this.cardFlipped;
+      }
+    },
+
+    selectCategory(category) {
+      this.selectedCategory = this.selectedCategory === category ? null : category;
+    },
+
+    nextCard() {
+      let availableCategories = this.questions;
+
+      // If a category is selected, filter to only that category
+      if (this.selectedCategory) {
+        availableCategories = this.questions.filter(cat => cat.category === this.selectedCategory);
+      }
+
+      // Select a random category from available ones
+      const categoryIndex = Math.floor(Math.random() * availableCategories.length);
+      const category = availableCategories[categoryIndex];
+
+      // Select a random question from that category
+      const questionIndex = Math.floor(Math.random() * category.questions.length);
+
+      this.currentCard = {
+        category: category.category,
+        question: category.questions[questionIndex]
+      };
+
+      this.currentCategory = category.category;
+      this.cardsAnswered++;
+
+      this.cardFlipped = true;
+    },
+
+    resetGame() {
+      this.cardFlipped = false;
+      this.cardsAnswered = 0;
+      this.selectedCategory = null;
+      this.currentCard = { 
+        question: "Click next card to begin", 
+        category: "Getting Started" 
+      };
+      this.currentCategory = "Getting Started";
+    }
+  }
+}
+</script>
+
+    
+    <script src="https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+          reg.addEventListener('updatefound', () => {
+            const newSW = reg.installing;
+            newSW.addEventListener('statechange', () => {
+              if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+                // Notify the user and reload if they confirm
+                if (confirm('A new version is available. Reload now?')) {
+                  window.location.reload();
+                }
+              }
+            });
+          });
+        });
+
+        // Ensure immediate activation of a new service worker
+        navigator.serviceWorker.ready.then(registration => {
+          registration.active.postMessage({ type: 'SKIP_WAITING' });
+        });
+      }
+    </script>
+  </body>
+</html>
