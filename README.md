@@ -1,7 +1,7 @@
 🎴 Family Cards - Strengthen your family bonds one question at a time
 ============================
 
-![](https://raw.githubusercontent.com/michaelsboost/FamilyCards/main/imgs/screenshot.png)
+![](https://raw.githubusercontent.com/michaelsboost/FamilyCards/main/imgs/screenshot.jpeg)
 
 ## 🌟 Overview  
 **Family Cards** is a fun, interactive card-flipping memory game built with **HTML, CSS, and JavaScript** — designed to help families connect, share memories, and create lasting bonds.
