@@ -53,6 +53,7 @@ Want to help make Family Cards better?
 Licensed under the MIT License — free to use, remix, and distribute.
 
 Developed by: [Michael Schwartz](https://michaelsboost.com/)  
+**Forked from:** [Couple Cards](https://github.com/michaelsboost/CoupleCards)  
 Maintained by: The open-source community
 
 ## **☕ Support the Developer**
